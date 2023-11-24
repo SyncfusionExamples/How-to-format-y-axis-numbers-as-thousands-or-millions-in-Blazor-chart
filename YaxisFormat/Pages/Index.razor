@@ -1,0 +1,44 @@
+﻿@page "/"
+
+@using Syncfusion.Blazor.Charts
+
+<SfChart Title="Sales Comparison">
+
+    <ChartPrimaryXAxis IntervalType="IntervalType.Years" ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" LabelPlacement="LabelPlacement.BetweenTicks" />
+    <ChartEvents OnAxisLabelRender="@LabelRender"></ChartEvents>
+
+    <ChartSeriesCollection>
+        <ChartSeries DataSource="@Data" XName="X" YName="Y" Type="ChartSeriesType.Column" />
+    </ChartSeriesCollection>
+
+</SfChart>
+
+@code {
+    public class ChartData
+    {
+        public DateTime X { get; set; }
+        public double Y { get; set; }
+    }
+
+    public List<ChartData> Data = new List<ChartData>
+    {
+          new ChartData{ X = new DateTime(2005, 01, 01), Y= 7000000 },
+          new ChartData{ X = new DateTime(2006, 01, 01), Y= 5000000 },
+          new ChartData{ X = new DateTime(2007, 01, 01), Y= 3000000 },
+          new ChartData{ X = new DateTime(2008, 01, 01), Y= 4000000 },
+          new ChartData{ X = new DateTime(2009, 01, 01), Y= 8000000 },
+          new ChartData{ X = new DateTime(2010, 01, 01), Y= 5000000 },
+          new ChartData{ X = new DateTime(2011, 01, 01), Y= 7300000 },
+          new ChartData{ X = new DateTime(2012, 01, 01), Y= 9000000 },
+    };
+
+    public void LabelRender(AxisLabelRenderEventArgs args)
+    {
+        if (args.Axis.Name == "PrimaryYAxis")
+        {
+            double temp = Convert.ToDouble(args.Text);
+            args.Text = (temp / 1000000).ToString() + "M";
+        }
+
+    }
+}
