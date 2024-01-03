@@ -1,20 +1,22 @@
 # How-to-format-y-axis-numbers-as-thousands-or-millions-in-Blazor-chart
 
-This article explains how to format y-axis numbers into thousands or millions in Blazor chart.
+This article explains how to format y-axis numbers into thousands or millions in Blazor Chart Component.
 
-**Formatting Y axis labels into Thousands or Millions:**
+**Formatting Y axis labels into Thousands or Millions in Blazor chart**
 
-Blazor chart provides us support to format axis label using [OnAxisLabelRender ](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.ChartEvents.html#Syncfusion_Blazor_Charts_ChartEvents_OnAxisLabelRender)event. This event triggers before each axis label is rendered.
+[Blazor Chart](https://www.syncfusion.com/blazor-components/blazor-charts) provides us support to format axis label using [OnAxisLabelRender ](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.ChartEvents.html#Syncfusion_Blazor_Charts_ChartEvents_OnAxisLabelRender) event. This event triggers before each axis label is rendered.
 
 The following properties are available in the [AxisLabelRenderEventArgs](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.AxisLabelRenderEventArgs.html).
 
 - [LabelStyle ](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.AxisLabelRenderEventArgs.html#Syncfusion_Blazor_Charts_AxisLabelRenderEventArgs_LabelStyle)- Specifies the font information of the axis label.
 - [Text ](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.AxisLabelRenderEventArgs.html#Syncfusion_Blazor_Charts_AxisLabelRenderEventArgs_Text)- Specifies the text to be displayed in the axis label.
-- [Value](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.AxisLabelRenderEventArgs.html#Syncfusion_Blazor_Charts_AxisLabelRenderEventArgs_Value) - Specifies the ﻿﻿value of the axis label.
+- [Value](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.AxisLabelRenderEventArgs.html#Syncfusion_Blazor_Charts_AxisLabelRenderEventArgs_Value) - Specifies the value of the axis label.
 
-The following code example, we can see how to format the y-axis label into millions using [OnAxisLabelRender](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.ChartEvents.html#Syncfusion_Blazor_Charts_ChartEvents_OnAxisLabelRender) event.
+A method named **LabelRender** is bound to the [OnAxisLabelRender ](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.ChartEvents.html#Syncfusion_Blazor_Charts_ChartEvents_OnAxisLabelRender) event. This event is called for each axis label. In the **LabelRender** method, Y-axis labels are converted to millions format and then bound to the event argument text. 
 
-**C#**
+The following code example demonstrates this.
+
+**Index.razor**
 
 ```cshtml
 
@@ -27,7 +29,7 @@ The following code example, we can see how to format the y-axis label into milli
     <ChartEvents OnAxisLabelRender="@LabelRender"></ChartEvents>
 
     <ChartSeriesCollection>
-        <ChartSeries DataSource="@Data" XName="X" YName="Y" Type="ChartSeriesType.Column" />
+        <ChartSeries DataSource="@Data" XName="X" YName="Y" Type="ChartSeriesType.Column"/>
     </ChartSeriesCollection>
 
 </SfChart>
@@ -59,14 +61,12 @@ The following code example, we can see how to format the y-axis label into milli
             double temp = Convert.ToDouble(args.Text);
             args.Text = (temp / 1000000).ToString() + "M";
         }
-
     }
 }
 
 ```
 
-
-The following image screenshot illustrate the output of the above code snippet.
+The following image screenshot illustrates the output of the above code snippet.
 
 **Output:**
 
