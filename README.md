@@ -1,83 +1,64 @@
-# How-to-format-y-axis-numbers-as-thousands-or-millions-in-Blazor-chart
+# Format Y-Axis Numbers as Thousands or Millions in Syncfusion Blazor Chart
 
-This article explains how to format y-axis numbers into thousands or millions in Blazor Chart Component.
+## Overview
 
-**Formatting Y axis labels into Thousands or Millions in Blazor chart**
+This sample demonstrates how to customize Y-axis label rendering in a Syncfusion [Blazor Charts](https://www.syncfusion.com/blazor-components/blazor-charts) component. The chart displays large numeric values and uses the `OnAxisLabelRender` event to intercept and modify axis labels before they are rendered. By converting raw values into abbreviated formats such as millions (`M`), the chart becomes easier to read and interpret, especially for financial, sales, and analytical datasets containing large numbers.
 
-[Blazor Chart](https://www.syncfusion.com/blazor-components/blazor-charts) provides us support to format axis label using [OnAxisLabelRender ](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.ChartEvents.html#Syncfusion_Blazor_Charts_ChartEvents_OnAxisLabelRender) event. This event triggers before each axis label is rendered.
+The implementation uses a column chart bound to a collection of date-based data points. During axis label rendering, the sample evaluates Y-axis labels and updates the displayed text dynamically, ensuring a clean and user-friendly presentation without changing the underlying data source.
 
-The following properties are available in the [AxisLabelRenderEventArgs](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.AxisLabelRenderEventArgs.html).
+## Key Features
 
-- [LabelStyle ](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.AxisLabelRenderEventArgs.html#Syncfusion_Blazor_Charts_AxisLabelRenderEventArgs_LabelStyle)- Specifies the font information of the axis label.
-- [Text ](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.AxisLabelRenderEventArgs.html#Syncfusion_Blazor_Charts_AxisLabelRenderEventArgs_Text)- Specifies the text to be displayed in the axis label.
-- [Value](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.AxisLabelRenderEventArgs.html#Syncfusion_Blazor_Charts_AxisLabelRenderEventArgs_Value) - Specifies the value of the axis label.
+- Uses the `SfChart` component to render chart data.
+- Configures the X-axis using `ChartPrimaryXAxis`.
+- Sets `ValueType.DateTime` for date-based horizontal axis rendering.
+- Uses `IntervalType.Years` for yearly interval calculation.
+- Displays data through a `ChartSeries` configured with `ChartSeriesType.Column`.
+- Handles the `OnAxisLabelRender` event using the `LabelRender(AxisLabelRenderEventArgs args)` method.
+- Accesses axis label information through `AxisLabelRenderEventArgs`.
+- Identifies the primary Y-axis using `args.Axis.Name == "PrimaryYAxis"`.
+- Converts rendered label text into numeric values using `Convert.ToDouble(args.Text)`.
+- Updates `args.Text` with formatted values in millions by dividing the source value by `1000000` and appending the `"M"` suffix.
 
-A method named **LabelRender** is bound to the [OnAxisLabelRender ](https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.Charts.ChartEvents.html#Syncfusion_Blazor_Charts_ChartEvents_OnAxisLabelRender) event. This event is called for each axis label. In the **LabelRender** method, Y-axis labels are converted to millions format and then bound to the event argument text. 
+## Prerequisites
 
-The following code example demonstrates this.
+- [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) or [Visual Studio Code](https://code.visualstudio.com/)
+- [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet) compatible with the project's target framework
 
-**Index.razor**
+## How to Run the Project
 
-```cshtml
+**Visual Studio 2022**
 
-@using Syncfusion.Blazor.Charts
+1. Clone or download the repository.
+2. Open the project file located inside the `YaxisFormat` folder.
+3. Restore NuGet packages when prompted.
+4. Build the project.
+5. Run the application using `Ctrl+F5`.
 
-<SfChart Title="Sales Comparison">
+**Visual Studio Code**
 
-    <ChartPrimaryXAxis IntervalType="IntervalType.Years" ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" LabelPlacement="LabelPlacement.BetweenTicks"/>
+1. Clone or download the repository.
+2. Open the repository folder in Visual Studio Code.
+3. Open the integrated terminal.
+4. Navigate to the project directory.
 
-    <ChartEvents OnAxisLabelRender="@LabelRender"></ChartEvents>
-
-    <ChartSeriesCollection>
-        <ChartSeries DataSource="@Data" XName="X" YName="Y" Type="ChartSeriesType.Column"/>
-    </ChartSeriesCollection>
-
-</SfChart>
-
-@code {
-
-    public class ChartData
-    {
-        public DateTime X { get; set; }
-        public double Y { get; set; }
-    }
-
-    public List<ChartData> Data = new List<ChartData>
-    {
-          new ChartData{ X = new DateTime(2005, 01, 01), Y= 7000000 },
-          new ChartData{ X = new DateTime(2006, 01, 01), Y= 5000000 },
-          new ChartData{ X = new DateTime(2007, 01, 01), Y= 3000000 },
-          new ChartData{ X = new DateTime(2008, 01, 01), Y= 4000000 },
-          new ChartData{ X = new DateTime(2009, 01, 01), Y= 8000000 },
-          new ChartData{ X = new DateTime(2010, 01, 01), Y= 5000000 },
-          new ChartData{ X = new DateTime(2011, 01, 01), Y= 7300000 },
-          new ChartData{ X = new DateTime(2012, 01, 01), Y= 9000000 },           
-    };
-
-    public void LabelRender(AxisLabelRenderEventArgs args)
-    {
-        if(args.Axis.Name == "PrimaryYAxis")
-        {
-            double temp = Convert.ToDouble(args.Text);
-            args.Text = (temp / 1000000).ToString() + "M";
-        }
-    }
-}
-
+```bash
+cd YaxisFormat
+dotnet restore
+dotnet run
 ```
 
-The following image screenshot illustrates the output of the above code snippet.
+5. Open the local application URL displayed in the terminal after the application starts.
 
-**Output:**
+## Project Structure
 
-![](/Y-axis-format-to-Millions.png)
+`Pages/Index.razor` - Contains the `SfChart` component, chart configuration, sample data source, and the `LabelRender(AxisLabelRenderEventArgs args)` event handler used to format Y-axis labels into millions.
 
-**Conclusion**
+## Support and Feedback
 
-I hope you enjoyed learning how to format y-axis label into thousands and millions in Blazor Chart Component.
+- For general product questions, visit the [Syncfusion Community Forum](https://www.syncfusion.com/forums) or [Syncfusion Support](https://www.syncfusion.com/support).
+- To report an issue specific to this sample, open a GitHub issue in this repository.
+- Refer to the official Syncfusion chart documentation for axis label customization and rendering events: https://help.syncfusion.com/chart-sdk/blazor/charts/events
 
-You can refer to our [Blazor Chart feature tour](https://www.syncfusion.com/blazor-components/blazor-charts) page to know about its other groundbreaking feature representations and [documentation](https://blazor.syncfusion.com/documentation/chart/getting-started), and how to quickly get started for configuration specifications. You can also explore our [Blazor Chart example](https://blazor.syncfusion.com/demos/chart/line?theme=bootstrap5) to understand how to create and manipulate data.
+## License
 
-For current customers, you can check out our components from the [License and Downloads](https://www.syncfusion.com/sales/teamlicense) page. If you are new to Syncfusion, you can try our 30-day [free trial](https://www.syncfusion.com/downloads/blazor) to check out our other controls.
-
-If you have any queries or require clarifications, please let us know in the comments section below. You can also contact us through our [support forums](https://www.syncfusion.com/forums), [support portal](https://support.syncfusion.com/create), or [feedback portal](https://www.syncfusion.com/feedback/blazor-components?control=charts). We are always happy to assist you!
+This is a Syncfusion sample project provided to demonstrate product usage. Review the [Syncfusion license terms](https://www.syncfusion.com/sales/pricing?category=ui-components) before using Syncfusion components in your own applications.
